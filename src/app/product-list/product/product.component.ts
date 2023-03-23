@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from 'src/app/models/product';
+import { ProductRepository } from 'src/app/models/product.repository';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'product',
@@ -7,9 +11,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductComponent implements OnInit {
 
-  constructor() { }
+  product: Product | undefined;
+  loading: boolean = false;
 
-  ngOnInit(): void {
+  constructor(private route: ActivatedRoute, private producktService: ProductService) {}
+
+  ngOnInit(): void {    
+    this.route.params.subscribe(params => {
+
+      const id = params["productId"];
+      this.loading = true;
+
+      this.producktService.getProductById(id).subscribe(result => {
+        this.product = {...result, id: id};
+        this.loading = false;
+      });
+    });
   }
 
 }

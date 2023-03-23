@@ -1,36 +1,21 @@
-<div *ngIf="products.length>0; else noProducts">
-    <ng-template [ngTemplateOutlet]="productList1" [ngTemplateOutletContext]="{products: products}"></ng-template>
-    <ng-template [ngTemplateOutlet]="productList2" [ngTemplateOutletContext]="{products: products}"></ng-template>
+<div *ngIf="!loading">
+    <div *ngIf="products.length>0; else noProducts">
+        <ng-template [ngTemplateOutlet]="productList" [ngTemplateOutletContext]="{products: products}"></ng-template>
+    </div>
 </div>
 
-<ng-template #productList1 let-products="products">
-    <h2>En çok satanlar</h2>
-    <div *ngFor="let product of products" >
-        <div *ngIf="product.isActive" class="card mb-3">
+<ng-template #productList let-products="products">
+    <div *ngFor="let product of products">
+        <div *ngIf="product.isActive" class="card mb-3 p-1">
             <div class="row">
                 <div class="col-3">
-                    <img src="/assets/images/{{ product.imageUrl }}" alt="" class="img-fluid rounded-start">
+                    <img src="/assets/images/{{product.imageUrl}}" alt="" class="img-fluid rounded-start">
                 </div>
                 <div class="col-9">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="cart-text">{{ product.description }}</p>
+                        <a routerLink="/products/{{product.id}}" class="btn btn-primary">Ürün Detay</a>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
-
-<ng-template #productList2 let-products="products">
-    <h2>En beğenilenler</h2>
-    <div class="row">
-        <div *ngFor="let product of products" class="col-3">
-            <div *ngIf="product.isActive" class="card mb-3">
-                <img src="/assets/images/{{ product.imageUrl }}" alt="" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="cart-text">{{ product.description }}</p>
                 </div>
             </div>
         </div>
@@ -42,3 +27,7 @@
         no products
     </div>
 </ng-template>
+
+<div *ngIf="loading" class="spinner-border text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+</div>

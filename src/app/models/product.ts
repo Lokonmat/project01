@@ -1,8 +1,9 @@
 export interface Product {
-    id: number;
+    id: any;
     name: string;
     price: number;
     imageUrl: string;
     description: string;
     isActive: boolean;
+    categoryId: number;
 }
